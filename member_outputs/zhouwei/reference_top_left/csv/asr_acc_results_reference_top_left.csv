@@ -1,0 +1,2 @@
+Position,Clean Accuracy,ASR,Epoch,Training Time,Model Path,Note
+top_left,0.703700,0.940600,10,181.63,D:\project\Machine-Learning\source_code\results\models\backdoor_top_left.pt,full_10_epochs

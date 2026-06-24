@@ -430,3 +430,77 @@ python -m experiments.run_position --position top_left --part part1 --batch-size
 | 触发器函数 | `utils/trigger_utils.py` | 田玉娇 |
 | 实验参数说明 | `utils/config.py` 和本 README 第 2 节 | 贾思楠 |
 | 实验部分报告依据 | 训练、评估、结果 CSV 和图表 | 田玉娇 |
+
+## 17. 实验结果双目录提交规则
+
+实验脚本默认把结果写到 `source_code/results/`，这个目录是给程序继续读取用的；成员最终提交时，还需要把自己负责的结果复制到项目根目录下的 `member_outputs/个人目录/`。
+
+### 程序运行目录
+
+```text
+source_code/results/csv/       # run_position、detection_score、merge_results 默认读写 CSV
+source_code/results/models/    # train_backdoor 默认保存模型
+source_code/results/logs/      # 可放训练日志
+source_code/figures/           # plot_results 默认输出图表
+```
+
+### 成员提交目录
+
+```text
+member_outputs/lizhuoer/       # 李卓尔提交 5 个位置实验结果
+member_outputs/jiasinan/       # 贾思楠提交 4 个位置实验结果和图表
+member_outputs/chenyulin/      # 陈昱霖提交检测结果和分析文字
+member_outputs/tianyujiao/     # 田玉娇提交合并结果、消融结果、报告
+member_outputs/zhouwei/        # 周玮提交参考模型、代码说明、参数说明
+```
+
+### 复制示例
+
+李卓尔跑完后，把程序输出复制到自己的目录：
+
+```powershell
+Copy-Item source_code\results\csv\asr_acc_results_part1.csv member_outputs\lizhuoer\csv\ -Force
+Copy-Item source_code\results\models\backdoor_top_left.pt member_outputs\lizhuoer\models\ -Force
+Copy-Item source_code\results\models\backdoor_top_center.pt member_outputs\lizhuoer\models\ -Force
+Copy-Item source_code\results\models\backdoor_top_right.pt member_outputs\lizhuoer\models\ -Force
+Copy-Item source_code\results\models\backdoor_middle_left.pt member_outputs\lizhuoer\models\ -Force
+Copy-Item source_code\results\models\backdoor_center.pt member_outputs\lizhuoer\models\ -Force
+```
+
+贾思楠跑完后：
+
+```powershell
+Copy-Item source_code\results\csv\asr_acc_results_part2.csv member_outputs\jiasinan\csv\ -Force
+Copy-Item source_code\results\models\backdoor_middle_right.pt member_outputs\jiasinan\models\ -Force
+Copy-Item source_code\results\models\backdoor_bottom_left.pt member_outputs\jiasinan\models\ -Force
+Copy-Item source_code\results\models\backdoor_bottom_center.pt member_outputs\jiasinan\models\ -Force
+Copy-Item source_code\results\models\backdoor_bottom_right.pt member_outputs\jiasinan\models\ -Force
+```
+
+陈昱霖检测完后：
+
+```powershell
+Copy-Item source_code\results\csv\detection_results.csv member_outputs\chenyulin\csv\ -Force
+```
+
+田玉娇合并完后：
+
+```powershell
+Copy-Item source_code\results\csv\final_results.csv member_outputs\tianyujiao\csv\ -Force
+Copy-Item source_code\results\csv\poison_rate_ablation.csv member_outputs\tianyujiao\csv\ -Force
+```
+
+### 提交方式
+
+以李卓尔为例：
+
+```bash
+git switch dev
+git pull origin dev
+git switch -c feature/lizhuoer-part1-results
+git add member_outputs/lizhuoer
+git commit -m "提交李卓尔五个位置实验结果"
+git push -u origin feature/lizhuoer-part1-results
+```
+
+其他成员只需要把 `member_outputs/lizhuoer` 换成自己的目录。

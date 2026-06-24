@@ -172,3 +172,117 @@ git push -u origin feature/your-name-task
 然后在 GitHub 上向 `dev` 分支提交 Pull Request。确认没有问题后，再合并到 `dev`。最终提交前，再由负责人把 `dev` 合并到 `main`。
 
 注意：不要直接在 `main` 上写代码，也不要直接把未检查的实验结果推到 `main`。
+
+## 成员结果提交目录
+
+除了代码目录 `source_code/` 以外，项目还新增了 `member_outputs/`，专门用来放每个成员自己的实验结果和说明文件。
+
+```text
+member_outputs/
+  README.md                         # 成员交付目录总说明，写明谁交什么、交到哪里
+
+  zhouwei/                          # 周玮：代码框架、统一参数、参考模型和主实验说明
+    README.md
+    reference_top_left/             # 已完整训练好的 top_left 参考样例
+      models/backdoor_top_left.pt   # 参考模型，10 轮训练
+      csv/asr_acc_results_reference_top_left.csv
+      notes/
+
+  lizhuoer/                         # 李卓尔：5 个位置实验结果
+    README.md
+    csv/                            # asr_acc_results_part1.csv
+    models/                         # top_left/top_center/top_right/middle_left/center 五个模型
+    logs/                           # 训练日志
+    screenshots/                    # 运行截图或测试截图
+    notes/                          # 实验现象说明
+
+  jiasinan/                         # 贾思楠：4 个位置实验结果和最终图表
+    README.md
+    csv/                            # asr_acc_results_part2.csv
+    models/                         # middle_right/bottom_left/bottom_center/bottom_right 四个模型
+    logs/
+    screenshots/
+    figures/                        # ASR 热力图、检测热力图、权衡图等
+    notes/                          # 图表说明
+
+  chenyulin/                        # 陈昱霖：防御检测和隐蔽性分析
+    README.md
+    csv/                            # detection_results.csv
+    models_to_check/                # 可放模型路径清单或临时检测说明
+    notes/                          # Neural Cleanse 检测难度说明、权衡分析文字
+
+  tianyujiao/                       # 田玉娇：结果合并、消融实验、报告整合
+    README.md
+    csv/                            # final_results.csv、poison_rate_ablation.csv
+    figures/                        # 基础图表或最终整合图表
+    report/                         # 最终报告 docx/pdf、运行说明
+    notes/                          # 合并检查说明、最终提交材料说明
+```
+
+## 实验结果双目录规则
+
+实验结果需要同时保留在两个地方：
+
+1. `source_code/results/`：程序运行目录，训练、检测、合并脚本默认从这里读取和写入。
+2. `member_outputs/个人目录/`：成员提交目录，用来归档每个人自己负责的结果，方便检查和提交。
+
+也就是说，大家运行代码后，先让程序自动输出到 `source_code/results/`，然后再把自己负责的 CSV、模型、日志、截图和说明复制到 `member_outputs/自己的目录/`。
+
+例如李卓尔跑完 5 个位置后：
+
+```text
+source_code/results/csv/asr_acc_results_part1.csv
+source_code/results/models/backdoor_top_left.pt
+source_code/results/models/backdoor_top_center.pt
+source_code/results/models/backdoor_top_right.pt
+source_code/results/models/backdoor_middle_left.pt
+source_code/results/models/backdoor_center.pt
+```
+
+还要复制一份到：
+
+```text
+member_outputs/lizhuoer/csv/asr_acc_results_part1.csv
+member_outputs/lizhuoer/models/backdoor_top_left.pt
+member_outputs/lizhuoer/models/backdoor_top_center.pt
+member_outputs/lizhuoer/models/backdoor_top_right.pt
+member_outputs/lizhuoer/models/backdoor_middle_left.pt
+member_outputs/lizhuoer/models/backdoor_center.pt
+```
+
+周玮已经放了一个完整训练参考样例：
+
+```text
+member_outputs/zhouwei/reference_top_left/models/backdoor_top_left.pt
+member_outputs/zhouwei/reference_top_left/csv/asr_acc_results_reference_top_left.csv
+```
+
+参考指标：
+
+```text
+Position: top_left
+Clean Accuracy: 0.703700
+ASR: 0.940600
+Epoch: 10
+Training Time: 181.63 秒
+```
+
+## 成员提交命令
+
+所有成员都从 `dev` 开自己的分支：
+
+```bash
+git switch dev
+git pull origin dev
+git switch -c feature/你的名字-任务名
+```
+
+只提交自己的目录，例如李卓尔：
+
+```bash
+git add member_outputs/lizhuoer
+git commit -m "提交李卓尔五个位置实验结果"
+git push -u origin feature/lizhuoer-part1-results
+```
+
+然后在 GitHub 上创建 Pull Request，目标分支选择 `dev`。
