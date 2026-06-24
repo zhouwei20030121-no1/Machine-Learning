@@ -1,0 +1,5 @@
+Position,Clean Accuracy,ASR,Epoch,Training Time,Model Path,Note
+bottom_right,0.751500,0.968800,10,223.24,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_right.pt,
+middle_right,0.724000,0.982000,10,255.98,D:\Machine_Learning\code\source_code\results\models\backdoor_middle_right.pt,
+bottom_left,0.721000,0.970400,10,220.39,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_left.pt,
+bottom_center,0.759100,0.976400,10,223.53,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_center.pt,
