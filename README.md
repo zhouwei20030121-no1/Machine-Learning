@@ -137,3 +137,38 @@ Machine-Learning/
   课程设计报告.pdf
   运行说明.txt
 ```
+
+## 分支协作规范
+
+仓库现在有两个长期分支：
+
+- `main`：稳定分支，只放最终确认后的内容；
+- `dev`：开发基准分支，所有成员后续写代码都先从 `dev` 创建自己的分支。
+
+成员开发流程建议如下：
+
+```bash
+git switch dev
+git pull origin dev
+git switch -c feature/your-name-task
+```
+
+示例：
+
+```bash
+git switch dev
+git pull origin dev
+git switch -c feature/lizhuoer-part1-experiments
+```
+
+完成自己的代码或结果整理后：
+
+```bash
+git add .
+git commit -m "描述本次完成的内容"
+git push -u origin feature/your-name-task
+```
+
+然后在 GitHub 上向 `dev` 分支提交 Pull Request。确认没有问题后，再合并到 `dev`。最终提交前，再由负责人把 `dev` 合并到 `main`。
+
+注意：不要直接在 `main` 上写代码，也不要直接把未检查的实验结果推到 `main`。
