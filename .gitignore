@@ -1,0 +1,15 @@
+source_code/data/
+source_code/results/csv/*
+source_code/results/logs/*
+source_code/results/models/*
+source_code/figures/*
+source_code/test_data/screenshots/*
+__pycache__/
+*.py[cod]
+~$*.docx
+
+!source_code/results/csv/.gitkeep
+!source_code/results/logs/.gitkeep
+!source_code/results/models/.gitkeep
+!source_code/figures/.gitkeep
+!source_code/test_data/screenshots/.gitkeep
