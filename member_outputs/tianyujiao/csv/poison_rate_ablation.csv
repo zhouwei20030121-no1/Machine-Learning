@@ -1,0 +1,4 @@
+Poison Rate,Position,Clean Accuracy,ASR,Epoch,Training Time,Model Path
+0.05,bottom_right,0.773600,0.944300,10,498.32,C:\Users\20443\Desktop\machine study\source_code\results\models\backdoor_bottom_right.pt
+0.1,bottom_right,0.751500,0.968800,10,617.60,C:\Users\20443\Desktop\machine study\source_code\results\models\backdoor_bottom_right.pt
+0.15,bottom_right,0.761200,0.970300,10,559.49,C:\Users\20443\Desktop\machine study\source_code\results\models\backdoor_bottom_right.pt

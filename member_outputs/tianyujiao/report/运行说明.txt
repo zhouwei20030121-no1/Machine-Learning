@@ -1,0 +1,172 @@
+================================================================================
+  课程设计运行说明
+  项目：基于 CIFAR-10 的后门攻击触发器位置空间敏感性分析
+  整理人：田玉娇
+  日期：2026-06-26
+================================================================================
+
+一、环境要求
+--------------------------------------------------------------------------------
+1. 操作系统：Windows / Linux / macOS 均可
+2. Python：建议 3.9 及以上
+3. 主要依赖：torch、torchvision、pandas、matplotlib、numpy
+
+安装步骤：
+
+  cd source_code
+  pip install -r requirements.txt
+
+说明：
+- 第一次运行会自动下载 CIFAR-10 数据集到 source_code/data/
+- 无 GPU 时程序会自动使用 CPU，训练速度较慢但可正常运行
+- 本组实验在 CPU 环境下完成，单个位置约 4～8 分钟，消融实验约 30 分钟
+
+
+二、项目目录说明
+--------------------------------------------------------------------------------
+Machine-Learning/
+  source_code/              代码主目录，程序默认读写 source_code/results/
+  member_outputs/           各成员实验结果提交目录
+  README.md                 项目总说明
+
+实验结果需保留两份：
+  1) source_code/results/   给程序继续运行用
+  2) member_outputs/个人目录/  给组内检查和 Git 提交用
+
+
+三、统一实验参数（主实验不可随意修改）
+--------------------------------------------------------------------------------
+  数据集        CIFAR-10
+  模型          Simple CNN
+  攻击方法      BadNets
+  触发器        3x3 白色方块
+  目标类别      0
+  投毒比例      0.10
+  训练轮数      10
+  Batch Size    128
+  学习率        0.001
+  优化器        Adam
+  随机种子      2026
+
+九个触发器位置名称：
+  top_left        top_center        top_right
+  middle_left     center            middle_right
+  bottom_left     bottom_center     bottom_right
+
+
+四、各成员实验命令（参考）
+--------------------------------------------------------------------------------
+【李卓尔 / 贾思楠】跑单个位置（训练 + 测试 + 写 CSV）：
+
+  cd source_code
+  python -m experiments.run_position --position top_left --part part1
+
+  --part part1  对应李卓尔 5 个位置，输出 asr_acc_results_part1.csv
+  --part part2  对应贾思楠 4 个位置，输出 asr_acc_results_part2.csv
+
+【陈昱霖】对 9 个位置分别做 Neural Cleanse 检测：
+
+  cd source_code
+  python -m defense.detection_score --position top_left --model-path results/models/backdoor_top_left.pt
+
+  9 个位置都跑完后生成 results/csv/detection_results.csv
+
+
+五、田玉娇负责部分：结果合并、消融实验与图表
+--------------------------------------------------------------------------------
+【步骤 1】准备输入文件
+
+  将以下三个文件放到 source_code/results/csv/ ：
+
+    asr_acc_results_part1.csv    （来自 member_outputs/lizhuoer/csv/）
+    asr_acc_results_part2.csv    （来自 member_outputs/jiasinan/csv/）
+    detection_results.csv        （来自 member_outputs/chenyulin/csv/）
+
+【步骤 2】合并 9 个位置最终结果
+
+  cd source_code
+  python -m analysis.merge_results
+
+  输出：source_code/results/csv/final_results.csv
+
+  合并后字段包括：
+    Position, Clean Accuracy, ASR, Detection Score, Mask Norm,
+    Detection Difficulty, Tradeoff Type
+
+【步骤 3】投毒比例消融实验
+
+  cd source_code
+  python -m experiments.run_poison_rate_ablation --position bottom_right --rates 0.05 0.10 0.15
+
+  输出：source_code/results/csv/poison_rate_ablation.csv
+
+  说明：固定 bottom_right 位置，分别测试 5%、10%、15% 投毒比例。
+
+【步骤 4】生成基础图表
+
+  cd source_code
+  python -m analysis.plot_results
+  python -m analysis.visualize_trigger_samples
+
+  输出到 source_code/figures/ ：
+    asr_heatmap_basic.png
+    detection_heatmap_basic.png
+    acc_asr_bar_basic.png
+    asr_detection_tradeoff.png
+    trigger_samples_grid.png
+
+【步骤 5】复制到提交目录
+
+  将 CSV 和图表复制到 member_outputs/tianyujiao/ 对应子目录：
+    csv/final_results.csv
+    csv/poison_rate_ablation.csv
+    figures/*.png
+
+
+六、输出文件检查清单
+--------------------------------------------------------------------------------
+田玉娇交付目录应至少包含：
+
+  member_outputs/tianyujiao/csv/final_results.csv
+  member_outputs/tianyujiao/csv/poison_rate_ablation.csv
+  member_outputs/tianyujiao/figures/asr_heatmap_basic.png
+  member_outputs/tianyujiao/figures/detection_heatmap_basic.png
+  member_outputs/tianyujiao/figures/acc_asr_bar_basic.png
+  member_outputs/tianyujiao/figures/asr_detection_tradeoff.png
+  member_outputs/tianyujiao/figures/trigger_samples_grid.png
+  member_outputs/tianyujiao/figures/poison_rate_ablation_bar.png
+
+全组主实验完成后，source_code/results/ 中还应包含 9 个后门模型：
+  results/models/backdoor_<position>.pt
+
+
+七、常见问题
+--------------------------------------------------------------------------------
+1. CIFAR-10 下载慢或失败
+   可手动下载后放到 source_code/data/cifar-10-batches-py/
+
+2. CPU 训练时间长
+   属正常现象。消融实验 3 组约需 30 分钟，请耐心等待。
+
+3. 合并报错 "Missing positions"
+   检查 part1、part2 是否各位置齐全，且无重复 Position。
+
+4. 合并报错 "missing values"
+   检查 detection_results.csv 是否 9 个位置都已检测。
+
+5. 图表中权衡散点图点较集中
+   因各位置 ASR 与 Detection Score 均较高且接近，属实验现象，
+   建议报告中优先使用热力图和柱状图。
+
+
+八、参考文档
+--------------------------------------------------------------------------------
+  项目总说明：README.md
+  代码详细说明：source_code/README.md
+  成员交付说明：member_outputs/README.md
+  田玉娇交付说明：member_outputs/tianyujiao/README.md
+  合并检查记录：member_outputs/tianyujiao/notes/合并检查说明.md
+
+================================================================================
+  如有问题请联系：田玉娇 / 周玮
+================================================================================
