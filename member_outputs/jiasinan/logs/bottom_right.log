@@ -1,0 +1,12 @@
+epoch=01 loss=1.2622 train_acc=0.5481
+epoch=02 loss=0.9090 train_acc=0.6795
+epoch=03 loss=0.7735 train_acc=0.7282
+epoch=04 loss=0.6862 train_acc=0.7602
+epoch=05 loss=0.6201 train_acc=0.7839
+epoch=06 loss=0.5623 train_acc=0.8033
+epoch=07 loss=0.5152 train_acc=0.8192
+epoch=08 loss=0.4658 train_acc=0.8356
+epoch=09 loss=0.4186 train_acc=0.8524
+epoch=10 loss=0.3859 train_acc=0.8623
+
+position=bottom_right clean_acc=0.7515 asr=0.9688
