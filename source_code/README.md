@@ -116,12 +116,13 @@ source_code/
     logs/
       可存放训练日志
 
-  figures/
-    asr_heatmap_basic.png
-    detection_heatmap_basic.png
-    acc_asr_bar_basic.png
-    asr_detection_tradeoff.png
-    trigger_samples_grid.png
+    figures/
+      asr_heatmap_basic.png
+      detection_heatmap_basic.png
+      acc_asr_bar_basic.png
+      asr_detection_tradeoff.png
+      poison_rate_ablation_bar.png
+      trigger_samples_grid.png
 
   test_data/
     screenshots/
@@ -316,7 +317,7 @@ Tradeoff Type
 python -m analysis.plot_results
 ```
 
-输出到 `figures/`：
+输出到 `results/figures/`：
 
 ```text
 asr_heatmap_basic.png
@@ -334,7 +335,7 @@ python -m analysis.visualize_trigger_samples
 输出：
 
 ```text
-figures/trigger_samples_grid.png
+results/figures/trigger_samples_grid.png
 ```
 
 ## 13. 投毒比例消融实验
@@ -376,11 +377,12 @@ results/models/backdoor_bottom_right.pt
 图表至少有：
 
 ```text
-figures/asr_heatmap_basic.png
-figures/detection_heatmap_basic.png
-figures/acc_asr_bar_basic.png
-figures/asr_detection_tradeoff.png
-figures/trigger_samples_grid.png
+results/figures/asr_heatmap_basic.png
+results/figures/detection_heatmap_basic.png
+results/figures/acc_asr_bar_basic.png
+results/figures/asr_detection_tradeoff.png
+results/figures/poison_rate_ablation_bar.png
+results/figures/trigger_samples_grid.png
 ```
 
 ## 15. 常见问题
@@ -441,7 +443,7 @@ python -m experiments.run_position --position top_left --part part1 --batch-size
 source_code/results/csv/       # run_position、detection_score、merge_results 默认读写 CSV
 source_code/results/models/    # train_backdoor 默认保存模型
 source_code/results/logs/      # 可放训练日志
-source_code/figures/           # plot_results 默认输出图表
+source_code/results/figures/   # plot_results、visualize_trigger_samples 默认输出最终图表
 ```
 
 ### 成员提交目录

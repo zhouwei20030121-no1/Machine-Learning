@@ -1,0 +1,6 @@
+Position,Clean Accuracy,ASR,Epoch,Training Time,Model Path,Note
+top_left,0.764200,0.929800,10,289.10,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_left.pt,
+top_center,0.726100,0.953500,10,300.52,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_center.pt,
+top_right,0.712200,0.931000,10,301.25,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_right.pt,
+middle_left,0.763900,0.974700,10,416.42,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_middle_left.pt,
+center,0.767500,0.981700,10,495.50,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_center.pt,

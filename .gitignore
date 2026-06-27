@@ -1,5 +1,10 @@
 source_code/data/
 source_code/results/csv/*
+!source_code/results/csv/asr_acc_results_part1.csv
+!source_code/results/csv/asr_acc_results_part2.csv
+!source_code/results/csv/detection_results.csv
+!source_code/results/csv/final_results.csv
+!source_code/results/csv/poison_rate_ablation.csv
 source_code/results/logs/*
 source_code/results/models/*
 source_code/figures/*
@@ -7,6 +12,8 @@ source_code/test_data/screenshots/*
 __pycache__/
 *.py[cod]
 ~$*.docx
+机器学习报告（2.0）.docx
+陈昱霖_参考文献补充复制版.docx
 
 !source_code/results/csv/.gitkeep
 !source_code/results/logs/.gitkeep
