@@ -1,5 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from pathlib import Path
+
+FIG_DIR = Path(__file__).resolve().parent.parent / "results" / "figures"
+FIG_DIR.mkdir(parents=True, exist_ok=True)
 
 asr = np.array([
     [0.9298,0.9535,0.9310],
@@ -46,6 +50,6 @@ plt.title("ASR Heatmap")
 
 plt.tight_layout()
 
-plt.savefig("asr_heatmap.png", dpi=300)
+plt.savefig(FIG_DIR / "asr_heatmap.png", dpi=300)
 
 plt.show()

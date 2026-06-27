@@ -9,8 +9,8 @@ import matplotlib.pyplot as plt
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 csv_path = BASE_DIR / "results" / "csv" / "poison_rate_ablation.csv"
-figure_dir = BASE_DIR / "figures"
-figure_dir.mkdir(exist_ok=True)
+figure_dir = BASE_DIR / "results" / "figures"
+figure_dir.mkdir(parents=True, exist_ok=True)
 
 # ==========================
 # 读取数据

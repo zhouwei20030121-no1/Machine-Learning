@@ -63,7 +63,7 @@ plt.ylim(0.91, 1.01)
 plt.tight_layout()
 
 # 保存
-save_path = BASE_DIR.parent / "figures" / "asr_detection_tradeoff.png"
+save_path = BASE_DIR.parent / "results" / "figures" / "asr_detection_tradeoff.png"
 save_path.parent.mkdir(parents=True, exist_ok=True)
 plt.savefig(save_path, dpi=300, bbox_inches="tight")
 print("Success: Chart saved successfully!")

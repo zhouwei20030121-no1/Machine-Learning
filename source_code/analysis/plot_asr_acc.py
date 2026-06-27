@@ -1,5 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
+
+FIG_DIR = Path(__file__).resolve().parent.parent / "results" / "figures"
+FIG_DIR.mkdir(parents=True, exist_ok=True)
 
 data = {
     "Position":[
@@ -45,5 +49,5 @@ plt.ylabel("Score")
 plt.legend()
 
 plt.tight_layout()
-plt.savefig("acc_asr_bar.png", dpi=300)
+plt.savefig(FIG_DIR / "acc_asr_bar.png", dpi=300)
 plt.show()

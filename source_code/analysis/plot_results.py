@@ -48,20 +48,6 @@ def save_acc_asr_bar(df: pd.DataFrame, output: Path) -> None:
     plt.close(fig)
 
 
-def save_tradeoff(df: pd.DataFrame, output: Path) -> None:
-    fig, ax = plt.subplots(figsize=(5, 4))
-    ax.scatter(df["ASR"], df["Detection Score"])
-    for _, row in df.iterrows():
-        ax.annotate(row["Position"], (row["ASR"], row["Detection Score"]), fontsize=8)
-    ax.set_xlabel("ASR")
-    ax.set_ylabel("Detection Score")
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    fig.tight_layout()
-    fig.savefig(output, dpi=200)
-    plt.close(fig)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate basic figures from final_results.csv.")
     parser.add_argument("--input", default=str(CSV_DIR / "final_results.csv"))
@@ -77,7 +63,6 @@ def main() -> None:
     save_heatmap(df, "ASR", "ASR Heatmap", output_dir / "asr_heatmap_basic.png")
     save_heatmap(df, "Detection Score", "Detection Difficulty Heatmap", output_dir / "detection_heatmap_basic.png")
     save_acc_asr_bar(df, output_dir / "acc_asr_bar_basic.png")
-    save_tradeoff(df, output_dir / "asr_detection_tradeoff.png")
     print(f"Figures saved to {output_dir}")
 
 

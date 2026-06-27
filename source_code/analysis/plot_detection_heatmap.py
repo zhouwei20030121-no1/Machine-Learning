@@ -79,8 +79,10 @@ plt.title(
 
 plt.tight_layout()
 
+fig_dir = BASE_DIR.parent / "results" / "figures"
+fig_dir.mkdir(parents=True, exist_ok=True)
 plt.savefig(
-    "detection_heatmap.png",
+    fig_dir / "detection_heatmap.png",
     dpi=300,
     bbox_inches="tight"
 )
