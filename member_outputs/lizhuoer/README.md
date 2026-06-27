@@ -36,4 +36,4 @@ python -m experiments.run_position --position middle_left --part part1
 python -m experiments.run_position --position center --part part1
 ```
 
-运行结束后，把 `source_code/results/csv/asr_acc_results_part1.csv` 复制到本目录的 `csv/`，把对应模型复制到本目录的 `models/`。
+运行结束后，程序会自动写入 `source_code/results/`。如需组内备份，可额外复制到本目录的 `csv/`、`models/`；**课程最终只提交 `source_code/`**，过程性日志和截图只保留在本目录，不要放进 `source_code/`。

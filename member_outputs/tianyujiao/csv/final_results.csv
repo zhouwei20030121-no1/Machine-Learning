@@ -1,10 +1,10 @@
 Position,Clean Accuracy,ASR,Epoch,Training Time,Model Path,Note,Detection Score,Mask Norm,Detection Difficulty,Tradeoff Type
-top_left,0.7642,0.9298,10,289.1,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_left.pt,,0.929033,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-top_center,0.7261,0.9535,10,300.52,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_center.pt,,0.952519,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-top_right,0.7122,0.931,10,301.25,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_top_right.pt,,0.930278,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-middle_left,0.7639,0.9747,10,416.42,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_middle_left.pt,,0.973748,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-center,0.7675,0.9817,10,495.5,C:\Users\20443\Desktop\jiqixuexi\source_code\results\models\backdoor_center.pt,,0.980641,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-middle_right,0.724,0.982,10,255.98,D:\Machine_Learning\code\source_code\results\models\backdoor_middle_right.pt,,0.980572,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-bottom_left,0.721,0.9704,10,220.39,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_left.pt,,0.968406,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-bottom_center,0.7591,0.9764,10,223.53,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_center.pt,,0.975373,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
-bottom_right,0.7515,0.9688,10,223.24,D:\Machine_Learning\code\source_code\results\models\backdoor_bottom_right.pt,,0.967315,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+top_left,0.7642,0.9298,10,289.1,results/models/backdoor_top_left.pt,,0.929033,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+top_center,0.7261,0.9535,10,300.52,results/models/backdoor_top_center.pt,,0.952519,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+top_right,0.7122,0.931,10,301.25,results/models/backdoor_top_right.pt,,0.930278,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+middle_left,0.7639,0.9747,10,416.42,results/models/backdoor_middle_left.pt,,0.973748,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+center,0.7675,0.9817,10,495.5,results/models/backdoor_center.pt,,0.980641,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+middle_right,0.724,0.982,10,255.98,results/models/backdoor_middle_right.pt,,0.980572,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+bottom_left,0.721,0.9704,10,220.39,results/models/backdoor_bottom_left.pt,,0.968406,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+bottom_center,0.7591,0.9764,10,223.53,results/models/backdoor_bottom_center.pt,,0.975373,0.008789,Low Detection Difficulty,高 ASR + 高检测分数
+bottom_right,0.7515,0.9688,10,223.24,results/models/backdoor_bottom_right.pt,,0.967315,0.008789,Low Detection Difficulty,高 ASR + 高检测分数

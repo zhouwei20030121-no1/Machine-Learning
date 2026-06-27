@@ -1,0 +1,274 @@
+================================================================================
+                        机器学习课程设计 · 运行说明
+================================================================================
+
+课程名称：机器学习
+项目题目：基于 CIFAR-10 的后门攻击触发器位置空间敏感性分析
+小组成员：周玮、李卓尔、贾思楠、陈昱霖、田玉娇
+提交日期：2026 年 6 月 28 日
+
+================================================================================
+
+
+一、项目概述
+--------------------------------------------------------------------------------
+
+本项目在 CIFAR-10 图像分类任务上实现 BadNets 后门攻击。将 3×3 白色触发器
+分别植入图像九宫格的九个空间位置，在统一实验参数下训练后门模型，比较不同
+位置对攻击效果与防御检测的影响。
+
+主要评价指标如下：
+
+  （1）Clean Accuracy：干净测试集上的分类准确率，反映主任务性能；
+  （2）ASR（Attack Success Rate）：攻击成功率，衡量后门是否生效；
+  （3）Detection Score：基于简化 Neural Cleanse 的检测分数；
+  （4）Mask Norm、Detection Difficulty、Tradeoff Type：防御分析辅助指标。
+
+除主实验外，本项目还设置了投毒比例消融实验，在固定触发器位置 bottom_right
+下，分别测试 5%、10%、15% 三种投毒比例，分析投毒强度对攻击效果与主任务
+性能的影响。
+
+本说明配合 source_code/ 目录一并提交。代码、实验结果、模型权重及报告图表
+均已包含在 source_code/ 中，老师可直接查阅结果；如需完整复现，请按第五节
+顺序执行相应命令。
+
+
+二、运行环境
+--------------------------------------------------------------------------------
+
+  操作系统：Windows / Linux / macOS
+  Python 版本：3.9 及以上（推荐 3.10 或 3.11）
+  主要依赖：PyTorch、torchvision、pandas、matplotlib、numpy
+
+安装步骤：
+
+  cd source_code
+  pip install -r requirements.txt
+
+补充说明：
+
+  （1）首次运行会自动下载 CIFAR-10 数据集至 source_code/data/，体积约 170 MB，
+      提交包中不含数据集文件，解压后需联网或手动放置数据方可运行；
+  （2）程序在无 GPU 时自动使用 CPU；本组实验均在 CPU 环境下完成；
+  （3）完整复现全部 9 个位置主实验约需 1～1.5 小时，消融实验约需 30 分钟；
+  （4）若 PyTorch 安装失败，请前往 PyTorch 官网选择与本机匹配的 CPU/CUDA 版本。
+
+
+三、提交目录结构
+--------------------------------------------------------------------------------
+
+本课程设计以 source_code/ 为主要提交内容，目录结构如下：
+
+  source_code/
+    models/               模型定义（Simple CNN）
+    utils/                配置、触发器、投毒数据集、训练工具
+    experiments/          训练、评估、单位置实验、消融实验
+    defense/              Neural Cleanse 简化检测
+    analysis/             结果合并与图表生成
+    results/
+      csv/                实验结果表格（已包含最终 CSV）
+      models/             9 个位置的后门模型权重（.pt）
+    figures/              报告用实验图表（PNG）
+    requirements.txt      Python 依赖清单
+    README.md             代码模块说明
+
+  运行说明.txt            本文件（项目根目录）
+
+提交包中已包含的内容：
+
+  results/csv/    5 份结果表格（part1、part2、detection、final、ablation）
+  results/models/ 9 个后门模型文件
+  figures/        6 张实验图表
+
+未包含、运行时可自动生成或需手动准备的内容：
+
+  data/           CIFAR-10 数据集（首次运行自动下载）
+  results/logs/   训练过程日志（过程文件，非必需）
+
+
+四、统一实验参数
+--------------------------------------------------------------------------------
+
+为保证九个位置实验结果可公平比较，主实验采用如下统一参数，复现时请勿
+随意修改：
+
+  数据集          CIFAR-10
+  模型结构        Simple CNN
+  攻击方法        BadNets
+  触发器样式      3×3 白色方块
+  目标类别        0
+  投毒比例        0.10
+  训练轮数        10
+  批大小          128
+  学习率          0.001
+  优化器          Adam
+  随机种子        2026
+
+九个触发器位置（命令行参数 --position 取值）：
+
+  top_left        top_center        top_right
+  middle_left     center            middle_right
+  bottom_left     bottom_center     bottom_right
+
+
+五、实验复现步骤
+--------------------------------------------------------------------------------
+
+以下命令均需在 source_code/ 目录下执行：
+
+  cd source_code
+
+
+【步骤 1】主实验：训练九个位置的后门模型
+................................................................................
+
+  python -m experiments.run_position --position top_left --part part1
+  python -m experiments.run_position --position top_center --part part1
+  python -m experiments.run_position --position top_right --part part1
+  python -m experiments.run_position --position middle_left --part part1
+  python -m experiments.run_position --position center --part part1
+  python -m experiments.run_position --position middle_right --part part2
+  python -m experiments.run_position --position bottom_left --part part2
+  python -m experiments.run_position --position bottom_center --part part2
+  python -m experiments.run_position --position bottom_right --part part2
+
+  输出：results/csv/asr_acc_results_part1.csv（5 行）
+        results/csv/asr_acc_results_part2.csv（4 行）
+        results/models/backdoor_<position>.pt（9 个模型）
+
+
+【步骤 2】防御检测：计算九个位置的 Detection Score
+................................................................................
+
+  python -m defense.detection_score --position top_left --model-path results/models/backdoor_top_left.pt
+  python -m defense.detection_score --position top_center --model-path results/models/backdoor_top_center.pt
+  python -m defense.detection_score --position top_right --model-path results/models/backdoor_top_right.pt
+  python -m defense.detection_score --position middle_left --model-path results/models/backdoor_middle_left.pt
+  python -m defense.detection_score --position center --model-path results/models/backdoor_center.pt
+  python -m defense.detection_score --position middle_right --model-path results/models/backdoor_middle_right.pt
+  python -m defense.detection_score --position bottom_left --model-path results/models/backdoor_bottom_left.pt
+  python -m defense.detection_score --position bottom_center --model-path results/models/backdoor_bottom_center.pt
+  python -m defense.detection_score --position bottom_right --model-path results/models/backdoor_bottom_right.pt
+
+  输出：results/csv/detection_results.csv
+
+
+【步骤 3】合并攻击结果与检测结果
+................................................................................
+
+  python -m analysis.merge_results
+
+  输出：results/csv/final_results.csv
+
+  合并字段：Position、Clean Accuracy、ASR、Detection Score、Mask Norm、
+            Detection Difficulty、Tradeoff Type 等。
+
+
+【步骤 4】投毒比例消融实验
+................................................................................
+
+  python -m experiments.run_poison_rate_ablation --position bottom_right --rates 0.05 0.10 0.15
+
+  输出：results/csv/poison_rate_ablation.csv
+
+
+【步骤 5】生成实验图表
+................................................................................
+
+  python -m analysis.plot_results
+  python -m analysis.visualize_trigger_samples
+
+  输出至 figures/：
+
+    asr_heatmap_basic.png           各位置 ASR 热力图
+    detection_heatmap_basic.png     各位置检测分数热力图
+    acc_asr_bar_basic.png           Clean Accuracy 与 ASR 对比柱状图
+    asr_detection_tradeoff.png      ASR 与检测分数权衡散点图
+    trigger_samples_grid.png        触发器位置样例九宫格
+    poison_rate_ablation_bar.png    投毒比例消融柱状图
+
+
+六、快速验证（无需完整重训）
+--------------------------------------------------------------------------------
+
+若仅需核对已提交结果，可直接打开以下文件，无需重新运行全部实验：
+
+  results/csv/final_results.csv         九个位置合并结果（主实验）
+  results/csv/poison_rate_ablation.csv  投毒比例消融结果
+  figures/                              报告对应实验图表
+
+对单个已保存模型，可单独执行评估命令：
+
+  python -m experiments.evaluate_clean_acc --model-path results/models/backdoor_top_left.pt
+  python -m experiments.evaluate_asr --position top_left --model-path results/models/backdoor_top_left.pt
+
+
+七、主要输出文件说明
+--------------------------------------------------------------------------------
+
+results/csv/ 目录：
+
+  文件名                        说明
+  ─────────────────────────────────────────────────────────
+  asr_acc_results_part1.csv     5 个位置攻击结果（上排及中间左、中）
+  asr_acc_results_part2.csv     4 个位置攻击结果（中间右及下排）
+  detection_results.csv         9 个位置 Neural Cleanse 检测结果
+  final_results.csv             9 个位置攻击与检测合并结果
+  poison_rate_ablation.csv      投毒比例 5% / 10% / 15% 消融结果
+
+results/models/ 目录：
+
+  backdoor_<position>.pt        各位置训练完成的后门模型，共 9 个
+
+figures/ 目录：
+
+  6 张 PNG 图表，与课程设计报告中的实验分析章节对应。
+
+
+八、小组成员分工
+--------------------------------------------------------------------------------
+
+  成员      主要负责内容
+  ─────────────────────────────────────────────────────────
+  周玮      项目框架搭建、统一参数配置、核心代码实现、运行说明
+  李卓尔    5 个位置主实验（top_left / top_center / top_right /
+            middle_left / center）
+  贾思楠    4 个位置主实验（middle_right / bottom_left /
+            bottom_center / bottom_right）
+  陈昱霖    9 个位置的 Neural Cleanse 检测与防御分析
+  田玉娇    结果合并、投毒比例消融实验、图表生成、报告整合
+
+
+九、常见问题
+--------------------------------------------------------------------------------
+
+  （1）提示找不到模块
+      请确认当前工作目录为 source_code，并使用 python -m 形式运行，
+      例如：python -m experiments.run_position --position top_left --part part1
+
+  （2）CIFAR-10 下载失败
+      可手动下载后解压至 source_code/data/cifar-10-batches-py/
+
+  （3）合并时报错 "Missing positions"
+      说明 part1 或 part2 中缺少某个位置，需补跑对应位置后再合并
+
+  （4）合并时报错 "missing values"
+      说明 detection_results.csv 中尚有位置未完成检测
+
+  （5）CPU 训练耗时较长
+      属正常现象；提交包中已含训练好的模型与 CSV，一般无需全部重跑
+
+  （6）权衡散点图中各点较为集中
+      因本实验各位置 ASR 与 Detection Score 均较高且接近，属正常实验现象
+
+
+十、相关文档
+--------------------------------------------------------------------------------
+
+  项目总说明：    README.md
+  代码模块说明：  source_code/README.md
+  课程设计报告：  机器学习报告（3.0）.docx（随小组一并提交）
+
+================================================================================
+                              — 运行说明 完 —
+================================================================================
